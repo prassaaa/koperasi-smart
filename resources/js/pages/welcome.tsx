@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Header, Footer } from "@/components/layout"
 import {
   Users,
   Shield,
@@ -31,14 +32,12 @@ import {
   Heart,
   Zap,
   ChevronRight,
-  Eye,
 } from "lucide-react"
 
 export default function KoperasiLandingPage() {
   const [isVisible, setIsVisible] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [activeService, setActiveService] = useState(0)
-  const [scrollY, setScrollY] = useState(0)
   const [counters, setCounters] = useState({
     members: 0,
     years: 0,
@@ -59,9 +58,7 @@ export default function KoperasiLandingPage() {
       setActiveService((prev) => (prev + 1) % 4)
     }, 4000)
 
-    // Scroll effect
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
+
 
     // Counter animation
     const animateCounters = () => {
@@ -96,7 +93,6 @@ export default function KoperasiLandingPage() {
     return () => {
       clearInterval(testimonialInterval)
       clearInterval(serviceInterval)
-      window.removeEventListener("scroll", handleScroll)
     }
   }, [])
 
@@ -273,57 +269,10 @@ export default function KoperasiLandingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrollY > 50 ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white/90 backdrop-blur-sm"
-        } border-b border-blue-100`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold text-blue-900">KSP Smart</span>
-                <div className="text-xs text-blue-600 font-medium">Satrio Mulia Arthomoro</div>
-              </div>
-            </div>
-            <div className="hidden lg:flex space-x-8">
-              <a href="/tentang" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Tentang
-              </a>
-              <a href="/layanan" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Layanan
-              </a>
-              <a href="/prestasi" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Prestasi
-              </a>
-              <a href="/keanggotaan" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Keanggotaan
-              </a>
-              <a href="/kontak" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Kontak
-              </a>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                className="border-blue-600 text-blue-600 hover:bg-blue-50 hidden sm:flex bg-transparent"
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                Info Layanan
-              </Button>
-              <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg">
-                Daftar Anggota
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Header />
 
       {/* Hero Section */}
-      <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-blue-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div
@@ -553,11 +502,11 @@ export default function KoperasiLandingPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl p-8">
+              <div className="flex justify-center">
                 <img
-                  src="/assets/images/placeholder-0fcwt.png"
-                  alt="Kantor KSP Smart"
-                  className="w-full h-auto rounded-2xl shadow-lg"
+                  src="/assets/images/logo.png"
+                  alt="Logo KSP Smart"
+                  className="w-full h-auto max-w-sm rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300"
                 />
               </div>
 
@@ -830,82 +779,7 @@ export default function KoperasiLandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div>
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <span className="text-xl font-bold">KSP Smart</span>
-                  <div className="text-xs text-blue-300">Satrio Mulia Arthomoro</div>
-                </div>
-              </div>
-              <p className="text-blue-200 mb-4 leading-relaxed">
-                Koperasi simpan pinjam yang melayani masyarakat desa dengan prinsip gotong royong, kekeluargaan, dan
-                kepercayaan.
-              </p>
-              <div className="flex items-center space-x-2">
-                <Shield className="w-4 h-4 text-blue-300" />
-                <span className="text-sm text-blue-300">Terdaftar & Diawasi Dinas Koperasi</span>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Layanan Utama</h4>
-              <ul className="space-y-3 text-blue-200">
-                <li className="hover:text-white transition-colors cursor-pointer">Simpanan Sukarela</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Pinjaman Usaha Mikro</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Kredit Konsumtif</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Simpanan Berjangka</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Informasi</h4>
-              <ul className="space-y-3 text-blue-200">
-                <li className="hover:text-white transition-colors cursor-pointer">Tentang Kami</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Visi & Misi</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Pengurus</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Prestasi</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Berita</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Bantuan</h4>
-              <ul className="space-y-3 text-blue-200">
-                <li className="hover:text-white transition-colors cursor-pointer">Cara Daftar</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Syarat & Ketentuan</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Tanya Jawab</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Kontak</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Pengaduan</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-blue-800 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="text-blue-200 mb-4 md:mb-0">
-                <p>&copy; 2024 KSP Satrio Mulia Arthomoro. Semua hak dilindungi undang-undang.</p>
-                <p className="text-sm">Terdaftar dan diawasi oleh Dinas Koperasi dan UMKM</p>
-              </div>
-              <div className="flex items-center space-x-4">
-                <Badge className="bg-green-100 text-green-800">
-                  <Shield className="w-3 h-3 mr-1" />
-                  Koperasi Sehat
-                </Badge>
-                <Badge className="bg-blue-100 text-blue-800">
-                  <Award className="w-3 h-3 mr-1" />
-                  Berprestasi 2023
-                </Badge>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

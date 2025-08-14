@@ -51,9 +51,7 @@
     </style>
 
     {{-- Icons --}}
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/logo.ico" sizes="any">
 
     {{-- DM Sans via Bunny (konsisten dengan setup kamu) --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
