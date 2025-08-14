@@ -98,9 +98,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
+                    <span className="text-gray-400 cursor-not-allowed">
+                        Sign up (Sementara Ditutup)
+                    </span>
                 </div>
             </form>
 
