@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Header, Footer } from "@/components/layout"
+import { useTypewriter } from "@/hooks/use-typewriter"
 import {
   Users,
   Shield,
@@ -38,6 +39,16 @@ export default function KoperasiLandingPage() {
   const [isVisible, setIsVisible] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [activeService, setActiveService] = useState(0)
+
+  // Typewriter effect for hero title with loop
+  const { displayText: typewriterText, isDeleting } = useTypewriter({
+    text: "Koperasi Desa Terpercaya",
+    speed: 60,
+    delay: 800,
+    loop: true,
+    deleteSpeed: 30,
+    deleteDelay: 1500,
+  })
   const [counters, setCounters] = useState({
     members: 0,
     years: 0,
@@ -290,10 +301,9 @@ export default function KoperasiLandingPage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold text-blue-900 mb-6 leading-tight">
-                Koperasi Desa
-                <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
-                  Terpercaya
+                  {typewriterText}
+                  <span className={`animate-pulse font-thin ${isDeleting ? 'text-red-500' : 'text-blue-600'} opacity-80`}>|</span>
                 </span>
               </h1>
 
