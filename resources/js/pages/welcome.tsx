@@ -283,7 +283,7 @@ export default function KoperasiLandingPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-blue-50 pt-20">
+      <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-blue-50 pt-28 sm:pt-24 lg:pt-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div
