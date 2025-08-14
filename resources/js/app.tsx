@@ -5,20 +5,26 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 
+// Metadata default
+const DEFAULT_TITLE = 'KSP Smart';
+
+// Nama app dari .env (Vite)
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => title ? `${title} - ${appName}` : appName,
-    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
-    setup({ el, App, props }) {
-        const root = createRoot(el);
+  title: (title) => (title ? `${title} - ${appName}` : DEFAULT_TITLE),
+  resolve: (name) =>
+    resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+  setup({ el, App, props }) {
+    const root = createRoot(el);
 
-        root.render(<App {...props} />);
-    },
-    progress: {
-        color: '#4B5563',
-    },
+    // Set light/dark mode saat initial load
+    initializeTheme();
+
+    // Render app tanpa Head component di sini
+    root.render(<App {...props} />);
+  },
+  progress: {
+    color: '#4B5563',
+  },
 });
-
-// This will set light / dark mode on load...
-initializeTheme();
