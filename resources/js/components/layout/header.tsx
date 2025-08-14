@@ -1,15 +1,41 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { LogIn, Menu, X } from "lucide-react"
+import { usePage } from "@inertiajs/react"
 
 interface HeaderProps {
   className?: string
+}
+
+interface CmsSettings {
+  general: Record<string, string>
+  contact: Record<string, string>
+  social: Record<string, string>
+  footer: Record<string, string>
+}
+
+interface SharedData {
+  cmsSettings: CmsSettings
+  auth?: {
+    user?: {
+      id: number
+      name: string
+      email: string
+    }
+  }
+  ziggy?: {
+    location: string
+    [key: string]: unknown
+  }
+  [key: string]: unknown
 }
 
 export default function Header({ className = "" }: HeaderProps) {
   const [scrollY, setScrollY] = useState(0)
   const [currentPath, setCurrentPath] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { props } = usePage<SharedData>()
+  const settings = props.cmsSettings || { general: {}, contact: {}, social: {}, footer: {} }
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
@@ -40,13 +66,17 @@ export default function Header({ className = "" }: HeaderProps) {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-1">
               <img
-                src="/assets/images/logo.png"
-                alt="KSP Smart Logo"
+                src={settings.general.site_logo || "/assets/images/logo.png"}
+                alt={`${settings.general.site_name || "KSP Smart"} Logo`}
                 className="w-15 h-15 object-contain"
               />
               <div>
-                <span className="text-xl font-bold text-blue-900">KSP Smart</span>
-                <div className="text-xs text-blue-600 font-medium">Satrio Mulia Arthomoro</div>
+                <span className="text-xl font-bold text-blue-900">
+                  {settings.general.site_name || "KSP Smart"}
+                </span>
+                <div className="text-xs text-blue-600 font-medium">
+                  {settings.general.site_tagline || "Satrio Mulia Arthomoro"}
+                </div>
               </div>
             </div>
           <div className="hidden lg:flex space-x-8">

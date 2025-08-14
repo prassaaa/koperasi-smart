@@ -35,14 +35,70 @@ import {
   ChevronRight,
 } from "lucide-react"
 
-export default function KoperasiLandingPage() {
+interface HeroSection {
+  id: number;
+  title: string;
+  subtitle?: string;
+  cta_text?: string;
+  cta_link?: string;
+  background_image?: string;
+  background_type: string;
+  text_color: string;
+  overlay_opacity: string;
+  badges?: Array<{
+    icon: string;
+    text: string;
+    color: string;
+  }>;
+  is_active: boolean;
+}
+
+interface Statistic {
+  id: number;
+  key: string;
+  label: string;
+  value: string;
+  suffix?: string;
+  icon: string;
+  color: string;
+  description?: string;
+  show_counter_animation: boolean;
+  animation_duration: number;
+  is_active: boolean;
+}
+
+interface Service {
+  id: number;
+  name: string;
+  description: string;
+  short_description?: string;
+  icon: string;
+  image?: string;
+  interest_rate?: number;
+  requirements?: string;
+  admin_fee?: number;
+  category: string;
+  features?: string[];
+  color: string;
+  sort_order: number;
+  is_featured: boolean;
+  is_active: boolean;
+}
+
+interface Props {
+  heroSection: HeroSection;
+  statistics: Statistic[];
+  services: Service[];
+}
+
+export default function KoperasiLandingPage({ heroSection, statistics, services }: Props) {
   const [isVisible, setIsVisible] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [activeService, setActiveService] = useState(0)
 
   // Typewriter effect for hero title with loop
   const { displayText: typewriterText, isDeleting } = useTypewriter({
-    text: "Koperasi Desa Terpercaya",
+    text: heroSection?.title || "Koperasi Desa Terpercaya",
     speed: 60,
     delay: 800,
     loop: true,
@@ -77,7 +133,13 @@ export default function KoperasiLandingPage() {
       const steps = 60
       const stepDuration = duration / steps
 
-      const targets = { members: 485, years: 12, satisfaction: 95, assets: 8 }
+      // Get targets from database statistics or use defaults
+      const targets = {
+        members: parseInt(statistics.find((s: Statistic) => s.key === 'total_members')?.value || '485'),
+        years: parseInt(statistics.find((s: Statistic) => s.key === 'years_operating')?.value || '12'),
+        satisfaction: parseInt(statistics.find((s: Statistic) => s.key === 'satisfaction_rate')?.value || '95'),
+        assets: parseInt(statistics.find((s: Statistic) => s.key === 'total_assets')?.value || '8'),
+      }
 
       let step = 0
       const counterInterval = setInterval(() => {
@@ -105,7 +167,7 @@ export default function KoperasiLandingPage() {
       clearInterval(testimonialInterval)
       clearInterval(serviceInterval)
     }
-  }, [])
+  }, [statistics])
 
   const testimonials = [
     {
@@ -164,36 +226,19 @@ export default function KoperasiLandingPage() {
     },
   ]
 
-  const services = [
-    {
-      icon: PiggyBank,
-      title: "Simpanan Sukarela",
-      description: "Tabungan dengan bunga kompetitif dan bisa diambil kapan saja",
-      features: ["Bunga 6% per tahun", "Tanpa biaya admin", "Bisa diambil sewaktu-waktu", "Setoran minimal Rp 10.000"],
-      color: "bg-blue-500",
-    },
-    {
-      icon: CreditCard,
-      title: "Pinjaman Usaha Mikro",
-      description: "Modal usaha untuk UMKM dengan proses mudah dan cepat",
-      features: ["Bunga 2% per bulan", "Tanpa agunan", "Proses 3 hari", "Maksimal Rp 20 juta"],
-      color: "bg-green-500",
-    },
-    {
-      icon: Building2,
-      title: "Kredit Konsumtif",
-      description: "Pinjaman untuk kebutuhan sehari-hari dan darurat",
-      features: ["Bunga 1.5% per bulan", "Tenor fleksibel", "Syarat mudah", "Maksimal Rp 10 juta"],
-      color: "bg-purple-500",
-    },
-    {
-      icon: Calculator,
-      title: "Simpanan Berjangka",
-      description: "Investasi jangka panjang dengan return yang menarik",
-      features: ["Bunga 8% per tahun", "Tenor 6-24 bulan", "Minimal Rp 1 juta", "Bonus loyalitas"],
-      color: "bg-orange-500",
-    },
-  ]
+  // Map services from database to component format
+  const mappedServices = services.map((service: Service) => ({
+    icon: service.icon === 'PiggyBank' ? PiggyBank :
+          service.icon === 'CreditCard' ? CreditCard :
+          service.icon === 'Building2' ? Building2 :
+          service.icon === 'Calculator' ? Calculator :
+          service.icon === 'Briefcase' ? Building2 :
+          service.icon === 'TrendingUp' ? TrendingUp : PiggyBank,
+    title: service.name,
+    description: service.short_description || service.description,
+    features: service.features || [],
+    color: service.color ? `bg-[${service.color}]` : "bg-blue-500",
+  }))
 
   const achievements = [
     {
@@ -308,8 +353,7 @@ export default function KoperasiLandingPage() {
               </h1>
 
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                KSP Satrio Mulia Arthomoro melayani kebutuhan finansial masyarakat desa dengan prinsip gotong royong,
-                kekeluargaan, dan kepercayaan. Bersama membangun ekonomi desa yang mandiri.
+                {heroSection?.subtitle || "KSP Satrio Mulia Arthomoro melayani kebutuhan finansial masyarakat desa dengan prinsip gotong royong, kekeluargaan, dan kepercayaan. Bersama membangun ekonomi desa yang mandiri."}
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
@@ -335,9 +379,10 @@ export default function KoperasiLandingPage() {
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg shadow-xl group"
+                  onClick={() => window.location.href = heroSection?.cta_link || '/keanggotaan'}
                 >
                   <Users className="w-5 h-5 mr-2" />
-                  Daftar Jadi Anggota
+                  {heroSection?.cta_text || "Daftar Jadi Anggota"}
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button
@@ -418,7 +463,7 @@ export default function KoperasiLandingPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            {services.map((service, index) => (
+            {mappedServices.map((service, index) => (
               <Card
                 key={index}
                 className={`border-0 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden group ${
@@ -436,7 +481,7 @@ export default function KoperasiLandingPage() {
                       <h3 className="text-2xl font-bold text-blue-900 mb-3">{service.title}</h3>
                       <p className="text-gray-600 mb-4 leading-relaxed">{service.description}</p>
                       <div className="grid grid-cols-2 gap-2">
-                        {service.features.map((feature, idx) => (
+                        {service.features.map((feature: string, idx: number) => (
                           <div key={idx} className="flex items-center space-x-2">
                             <CheckCircle className="w-4 h-4 text-green-500" />
                             <span className="text-sm text-gray-700">{feature}</span>

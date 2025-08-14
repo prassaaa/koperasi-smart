@@ -51,6 +51,13 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            // Share CMS settings globally
+            'cmsSettings' => [
+                'general' => \App\Models\Setting::getByGroup('general'),
+                'contact' => \App\Models\Setting::getByGroup('contact'),
+                'social' => \App\Models\Setting::getByGroup('social'),
+                'footer' => \App\Models\Setting::getByGroup('footer'),
+            ],
         ];
     }
 }

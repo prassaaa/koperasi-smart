@@ -1,11 +1,38 @@
 import { Badge } from "@/components/ui/badge"
 import { Shield, Award } from "lucide-react"
+import { usePage } from "@inertiajs/react"
 
 interface FooterProps {
   className?: string
 }
 
+interface CmsSettings {
+  general: Record<string, string>
+  contact: Record<string, string>
+  social: Record<string, string>
+  footer: Record<string, string>
+}
+
+interface SharedData {
+  cmsSettings: CmsSettings
+  auth?: {
+    user?: {
+      id: number
+      name: string
+      email: string
+    }
+  }
+  ziggy?: {
+    location: string
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
 export default function Footer({ className = "" }: FooterProps) {
+  const { props } = usePage<SharedData>()
+  const settings = props.cmsSettings || { general: {}, contact: {}, social: {}, footer: {} }
+
   return (
     <footer className={`bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8 ${className}`}>
       <div className="max-w-7xl mx-auto">
@@ -13,18 +40,21 @@ export default function Footer({ className = "" }: FooterProps) {
           <div>
             <div className="flex items-center space-x-1 mb-6">
               <img
-                src="/assets/images/logo.png"
-                alt="KSP Smart Logo"
+                src={settings.general.site_logo || "/assets/images/logo.png"}
+                alt={`${settings.general.site_name || "KSP Smart"} Logo`}
                 className="w-15 h-15 object-contain"
               />
               <div>
-                <span className="text-xl font-bold">KSP Smart</span>
-                <div className="text-xs text-blue-300">Satrio Mulia Arthomoro</div>
+                <span className="text-xl font-bold">
+                  {settings.general.site_name || "KSP Smart"}
+                </span>
+                <div className="text-xs text-blue-300">
+                  {settings.general.site_tagline || "Satrio Mulia Arthomoro"}
+                </div>
               </div>
             </div>
             <p className="text-blue-200 mb-4 leading-relaxed">
-              Koperasi simpan pinjam yang melayani masyarakat desa dengan prinsip gotong royong, kekeluargaan, dan
-              kepercayaan.
+              {settings.general.site_description || "Koperasi simpan pinjam yang melayani masyarakat desa dengan prinsip gotong royong, kekeluargaan, dan kepercayaan."}
             </p>
             <div className="flex items-center space-x-2">
               <Shield className="w-4 h-4 text-blue-300" />
@@ -68,8 +98,8 @@ export default function Footer({ className = "" }: FooterProps) {
         <div className="border-t border-blue-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-blue-200 mb-4 md:mb-0">
-              <p>&copy; {new Date().getFullYear()} KSP Satrio Mulia Arthomoro. Semua hak dilindungi undang-undang.</p>
-              <p className="text-sm">Terdaftar dan diawasi oleh Dinas Koperasi dan UMKM</p>
+              <p>&copy; {new Date().getFullYear()} {settings.footer.footer_copyright || "KSP Satrio Mulia Arthomoro. Semua hak dilindungi undang-undang."}</p>
+              <p className="text-sm">{settings.footer.footer_legal_text || "Terdaftar dan diawasi oleh Dinas Koperasi dan UMKM"}</p>
             </div>
             <div className="flex items-center space-x-4">
               <Badge className="bg-green-100 text-green-800">
