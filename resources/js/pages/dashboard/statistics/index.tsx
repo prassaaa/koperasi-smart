@@ -4,17 +4,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
+
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    Save, 
-    BarChart3, 
-    Plus, 
-    Edit, 
-    Trash2, 
-    Eye, 
+import { Head, Link, useForm, router } from '@inertiajs/react';
+import {
+    Save,
+    BarChart3,
+    Plus,
+    Edit,
+    Trash2,
+    Eye,
     EyeOff,
     Users,
     Calendar,
@@ -60,7 +60,7 @@ const iconMap = {
 };
 
 export default function StatisticsIndex({ statistics }: Props) {
-    const { data, setData, post, processing } = useForm<Record<string, string>>({});
+    const { data, setData, processing } = useForm<Record<string, string>>({});
 
     // Initialize form data from statistics
     React.useEffect(() => {
@@ -69,7 +69,7 @@ export default function StatisticsIndex({ statistics }: Props) {
             initialData[`stat_${stat.id}`] = stat.value;
         });
         setData(initialData);
-    }, [statistics]);
+    }, [statistics, setData]);
 
     const handleQuickUpdate = () => {
         const statisticsArray = statistics.map(stat => ({
@@ -77,8 +77,9 @@ export default function StatisticsIndex({ statistics }: Props) {
             value: data[`stat_${stat.id}`] || stat.value,
         }));
 
-        post(route('dashboard.statistics.batch'), {
-            data: { statistics: statisticsArray },
+        router.post(route('dashboard.statistics.batch'), {
+            statistics: statisticsArray,
+        }, {
             preserveScroll: true,
         });
     };
@@ -172,7 +173,7 @@ export default function StatisticsIndex({ statistics }: Props) {
                                     return (
                                         <div key={stat.id} className="flex items-center justify-between p-4 border rounded-lg">
                                             <div className="flex items-center gap-4">
-                                                <div 
+                                                <div
                                                     className="p-2 rounded-lg text-white"
                                                     style={{ backgroundColor: stat.color }}
                                                 >
@@ -210,8 +211,8 @@ export default function StatisticsIndex({ statistics }: Props) {
                                                         <Edit className="h-4 w-4" />
                                                     </Link>
                                                 </Button>
-                                                <Button 
-                                                    variant="ghost" 
+                                                <Button
+                                                    variant="ghost"
                                                     size="sm"
                                                     onClick={() => {
                                                         if (confirm('Are you sure you want to delete this statistic?')) {

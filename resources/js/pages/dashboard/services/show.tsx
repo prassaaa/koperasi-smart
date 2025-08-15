@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -103,7 +102,7 @@ export default function ServicesShow({ service }: Props) {
                         <CardContent>
                             <div className="border rounded-lg p-4">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <div 
+                                    <div
                                         className="p-2 rounded-lg text-white"
                                         style={{ backgroundColor: service.color }}
                                     >
@@ -168,7 +167,7 @@ export default function ServicesShow({ service }: Props) {
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Color</label>
                                     <div className="p-3 bg-gray-50 rounded border flex items-center gap-2">
-                                        <div 
+                                        <div
                                             className="w-4 h-4 rounded border"
                                             style={{ backgroundColor: service.color }}
                                         />
@@ -249,18 +248,18 @@ export default function ServicesShow({ service }: Props) {
                                     <div className="p-3 bg-gray-50 rounded border">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="text-sm font-mono">{service.image}</span>
-                                            <a 
-                                                href={service.image} 
-                                                target="_blank" 
+                                            <a
+                                                href={service.image}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-blue-600 hover:underline"
                                             >
                                                 <ExternalLink className="h-4 w-4" />
                                             </a>
                                         </div>
-                                        <img 
-                                            src={service.image} 
-                                            alt={service.name} 
+                                        <img
+                                            src={service.image}
+                                            alt={service.name}
                                             className="max-w-full h-32 object-cover rounded border"
                                             onError={(e) => {
                                                 e.currentTarget.style.display = 'none';

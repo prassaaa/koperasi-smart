@@ -46,6 +46,7 @@ class SettingController extends Controller
             'label' => 'nullable|string',
             'description' => 'nullable|string',
             'sort_order' => 'nullable|integer',
+            'is_active' => 'boolean',
         ]);
 
         Setting::create($validated);

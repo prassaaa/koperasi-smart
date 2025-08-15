@@ -1,11 +1,10 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Image, Eye, EyeOff, ExternalLink, Palette } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Eye, EyeOff, ExternalLink } from 'lucide-react';
 
 interface Badge {
     icon: string;
@@ -95,7 +94,7 @@ export default function HeroSectionsShow({ heroSection }: Props) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div 
+                            <div
                                 className="relative h-48 rounded-lg overflow-hidden border"
                                 style={{
                                     backgroundImage: heroSection.background_image ? `url(${heroSection.background_image})` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -103,26 +102,26 @@ export default function HeroSectionsShow({ heroSection }: Props) {
                                     backgroundPosition: 'center',
                                 }}
                             >
-                                <div 
+                                <div
                                     className="absolute inset-0 bg-black"
                                     style={{ opacity: parseFloat(heroSection.overlay_opacity) }}
                                 />
                                 <div className="relative h-full flex items-center justify-center p-4">
                                     <div className="text-center">
-                                        <h3 
+                                        <h3
                                             className="font-bold text-lg mb-2"
                                             style={{ color: heroSection.text_color }}
                                         >
                                             {heroSection.title}
                                         </h3>
-                                        <p 
+                                        <p
                                             className="text-sm opacity-90 mb-3"
                                             style={{ color: heroSection.text_color }}
                                         >
                                             {heroSection.subtitle}
                                         </p>
                                         {heroSection.cta_text && (
-                                            <button 
+                                            <button
                                                 className="px-4 py-2 bg-blue-600 text-white rounded text-sm"
                                             >
                                                 {heroSection.cta_text}
@@ -163,7 +162,7 @@ export default function HeroSectionsShow({ heroSection }: Props) {
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Text Color</label>
                                     <div className="p-3 bg-gray-50 rounded border flex items-center gap-2">
-                                        <div 
+                                        <div
                                             className="w-4 h-4 rounded border"
                                             style={{ backgroundColor: heroSection.text_color }}
                                         />
@@ -218,18 +217,18 @@ export default function HeroSectionsShow({ heroSection }: Props) {
                                     <div className="p-3 bg-gray-50 rounded border">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="text-sm font-mono">{heroSection.background_image}</span>
-                                            <a 
-                                                href={heroSection.background_image} 
-                                                target="_blank" 
+                                            <a
+                                                href={heroSection.background_image}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-blue-600 hover:underline"
                                             >
                                                 <ExternalLink className="h-4 w-4" />
                                             </a>
                                         </div>
-                                        <img 
-                                            src={heroSection.background_image} 
-                                            alt="Background" 
+                                        <img
+                                            src={heroSection.background_image}
+                                            alt="Background"
                                             className="max-w-full h-32 object-cover rounded border"
                                             onError={(e) => {
                                                 e.currentTarget.style.display = 'none';
@@ -251,7 +250,7 @@ export default function HeroSectionsShow({ heroSection }: Props) {
                                     <label className="text-sm font-medium">CTA Link</label>
                                     <div className="p-3 bg-gray-50 rounded border">
                                         {heroSection.cta_link ? (
-                                            <a 
+                                            <a
                                                 href={heroSection.cta_link}
                                                 className="text-blue-600 hover:underline flex items-center gap-1"
                                             >

@@ -1,15 +1,14 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { 
-    Plus, 
-    Edit, 
-    Trash2, 
-    Eye, 
+import {
+    Plus,
+    Edit,
+    Trash2,
+    Eye,
     EyeOff,
     Image,
     ExternalLink,
@@ -128,8 +127,8 @@ export default function HeroSectionsIndex({ heroSections }: Props) {
                                                     <Edit className="h-4 w-4" />
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="ghost" 
+                                            <Button
+                                                variant="ghost"
                                                 size="sm"
                                                 onClick={() => {
                                                     if (confirm('Are you sure you want to delete this hero section?')) {
@@ -150,7 +149,7 @@ export default function HeroSectionsIndex({ heroSections }: Props) {
                                                 <Image className="h-4 w-4" />
                                                 Preview
                                             </h4>
-                                            <div 
+                                            <div
                                                 className="relative h-32 rounded-lg overflow-hidden border"
                                                 style={{
                                                     backgroundImage: hero.background_image ? `url(${hero.background_image})` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -158,19 +157,19 @@ export default function HeroSectionsIndex({ heroSections }: Props) {
                                                     backgroundPosition: 'center',
                                                 }}
                                             >
-                                                <div 
+                                                <div
                                                     className="absolute inset-0 bg-black"
                                                     style={{ opacity: parseFloat(hero.overlay_opacity) }}
                                                 />
                                                 <div className="relative h-full flex items-center justify-center p-4">
                                                     <div className="text-center">
-                                                        <h3 
+                                                        <h3
                                                             className="font-bold text-sm mb-1"
                                                             style={{ color: hero.text_color }}
                                                         >
                                                             {hero.title}
                                                         </h3>
-                                                        <p 
+                                                        <p
                                                             className="text-xs opacity-90 line-clamp-2"
                                                             style={{ color: hero.text_color }}
                                                         >
@@ -197,7 +196,7 @@ export default function HeroSectionsIndex({ heroSections }: Props) {
                                                 <div className="flex items-center gap-2">
                                                     <Palette className="h-3 w-3" />
                                                     <span>Text Color: {hero.text_color}</span>
-                                                    <div 
+                                                    <div
                                                         className="w-4 h-4 rounded border"
                                                         style={{ backgroundColor: hero.text_color }}
                                                     />
@@ -209,7 +208,7 @@ export default function HeroSectionsIndex({ heroSections }: Props) {
                                                             {hero.badges.map((badge, index) => {
                                                                 const Icon = getBadgeIcon(badge.icon);
                                                                 return (
-                                                                    <div 
+                                                                    <div
                                                                         key={index}
                                                                         className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${getBadgeColor(badge.color)}`}
                                                                     >

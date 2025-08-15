@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -95,7 +94,7 @@ export default function StatisticsShow({ statistic }: Props) {
                         </CardHeader>
                         <CardContent>
                             <div className="flex items-center gap-4 p-4 border rounded-lg">
-                                <div 
+                                <div
                                     className="p-3 rounded-lg text-white"
                                     style={{ backgroundColor: statistic.color }}
                                 >
@@ -162,7 +161,7 @@ export default function StatisticsShow({ statistic }: Props) {
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Color</label>
                                     <div className="p-3 bg-gray-50 rounded border flex items-center gap-2">
-                                        <div 
+                                        <div
                                             className="w-4 h-4 rounded border"
                                             style={{ backgroundColor: statistic.color }}
                                         />

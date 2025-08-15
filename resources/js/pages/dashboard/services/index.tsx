@@ -1,15 +1,14 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { 
-    Plus, 
-    Edit, 
-    Trash2, 
-    Eye, 
+import {
+    Plus,
+    Edit,
+    Trash2,
+    Eye,
     EyeOff,
     Star,
     Briefcase,
@@ -114,11 +113,11 @@ export default function ServicesIndex({ services }: Props) {
                                             </Badge>
                                         </div>
                                     )}
-                                    
+
                                     <CardHeader className="pb-3">
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div 
+                                                <div
                                                     className="p-2 rounded-lg text-white"
                                                     style={{ backgroundColor: service.color }}
                                                 >
@@ -138,7 +137,7 @@ export default function ServicesIndex({ services }: Props) {
                                             </div>
                                         </div>
                                     </CardHeader>
-                                    
+
                                     <CardContent className="space-y-4">
                                         <p className="text-sm text-muted-foreground line-clamp-2">
                                             {service.short_description || service.description}
@@ -214,8 +213,8 @@ export default function ServicesIndex({ services }: Props) {
                                                         <Edit className="h-3 w-3" />
                                                     </Link>
                                                 </Button>
-                                                <Button 
-                                                    variant="ghost" 
+                                                <Button
+                                                    variant="ghost"
                                                     size="sm"
                                                     onClick={() => {
                                                         if (confirm('Are you sure you want to delete this service?')) {

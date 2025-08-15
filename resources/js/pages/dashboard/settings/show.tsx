@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -59,7 +58,7 @@ export default function SettingsShow({ setting }: Props) {
 
     const formatValue = (value: string, type: string) => {
         if (!value) return '-';
-        
+
         switch (type) {
             case 'boolean':
                 return value === '1' || value === 'true' ? 'Yes' : 'No';
@@ -71,9 +70,9 @@ export default function SettingsShow({ setting }: Props) {
                 }
             case 'url':
                 return (
-                    <a 
-                        href={value} 
-                        target="_blank" 
+                    <a
+                        href={value}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
                     >
@@ -82,7 +81,7 @@ export default function SettingsShow({ setting }: Props) {
                 );
             case 'email':
                 return (
-                    <a 
+                    <a
                         href={`mailto:${value}`}
                         className="text-blue-600 hover:underline"
                     >
@@ -94,9 +93,9 @@ export default function SettingsShow({ setting }: Props) {
                     <div className="space-y-2">
                         <div className="text-sm text-gray-600">{value}</div>
                         {value && (
-                            <img 
-                                src={value} 
-                                alt="Setting image" 
+                            <img
+                                src={value}
+                                alt="Setting image"
                                 className="max-w-xs h-auto rounded border"
                                 onError={(e) => {
                                     e.currentTarget.style.display = 'none';

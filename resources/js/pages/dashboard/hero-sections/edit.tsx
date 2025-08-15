@@ -8,13 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Save, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 
-interface Badge {
+type Badge = {
     icon: string;
     text: string;
     color: string;
-}
+} & Record<string, string>;
 
 interface HeroSection {
     id: number;
@@ -31,6 +31,20 @@ interface HeroSection {
     is_active: boolean;
 }
 
+type FormData = {
+    title: string;
+    subtitle: string;
+    background_image: string;
+    background_type: string;
+    cta_text: string;
+    cta_link: string;
+    badges: Badge[];
+    text_color: string;
+    overlay_opacity: string;
+    sort_order: number;
+    is_active: boolean;
+} & Record<string, string | number | boolean | Badge[]>;
+
 interface Props {
     heroSection: HeroSection;
 }
@@ -42,7 +56,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function HeroSectionsEdit({ heroSection }: Props) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, errors } = useForm<FormData>({
         title: heroSection.title,
         subtitle: heroSection.subtitle || '',
         background_image: heroSection.background_image || '',
@@ -68,20 +82,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
         }
     };
 
-    const addBadge = () => {
-        setData('badges', [...data.badges, { icon: 'Shield', text: '', color: 'blue' }]);
-    };
-
-    const removeBadge = (index: number) => {
-        const newBadges = data.badges.filter((_, i) => i !== index);
-        setData('badges', newBadges);
-    };
-
-    const updateBadge = (index: number, field: keyof Badge, value: string) => {
-        const newBadges = [...data.badges];
-        newBadges[index] = { ...newBadges[index], [field]: value };
-        setData('badges', newBadges);
-    };
+    // Badge functions removed as they are not used in the UI
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -118,7 +119,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div 
+                            <div
                                 className="relative h-48 rounded-lg overflow-hidden border"
                                 style={{
                                     backgroundImage: data.background_image ? `url(${data.background_image})` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -126,29 +127,29 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                     backgroundPosition: 'center',
                                 }}
                             >
-                                <div 
+                                <div
                                     className="absolute inset-0 bg-black"
                                     style={{ opacity: parseFloat(data.overlay_opacity) }}
                                 />
                                 <div className="relative h-full flex items-center justify-center p-4">
                                     <div className="text-center">
-                                        <h3 
+                                        <h3
                                             className="font-bold text-lg mb-2"
-                                            style={{ color: data.text_color }}
+                                            style={{ color: data.text_color as string }}
                                         >
-                                            {data.title || 'Hero Title'}
+                                            {(data.title as string) || 'Hero Title'}
                                         </h3>
-                                        <p 
+                                        <p
                                             className="text-sm opacity-90 mb-3"
-                                            style={{ color: data.text_color }}
+                                            style={{ color: data.text_color as string }}
                                         >
-                                            {data.subtitle || 'Hero subtitle description'}
+                                            {(data.subtitle as string) || 'Hero subtitle description'}
                                         </p>
                                         {data.cta_text && (
-                                            <button 
+                                            <button
                                                 className="px-4 py-2 bg-blue-600 text-white rounded text-sm"
                                             >
-                                                {data.cta_text}
+                                                {data.cta_text as string}
                                             </button>
                                         )}
                                     </div>
@@ -172,7 +173,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Label htmlFor="title">Title *</Label>
                                         <Input
                                             id="title"
-                                            value={data.title}
+                                            value={data.title as string}
                                             onChange={(e) => setData('title', e.target.value)}
                                             placeholder="e.g., Koperasi Desa Terpercaya"
                                             required
@@ -184,7 +185,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
 
                                     <div className="space-y-2">
                                         <Label htmlFor="background_type">Background Type</Label>
-                                        <Select value={data.background_type} onValueChange={(value) => setData('background_type', value)}>
+                                        <Select value={data.background_type as string} onValueChange={(value) => setData('background_type', value)}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select background type" />
                                             </SelectTrigger>
@@ -203,7 +204,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Label htmlFor="background_image">Background Image URL</Label>
                                         <Input
                                             id="background_image"
-                                            value={data.background_image}
+                                            value={data.background_image as string}
                                             onChange={(e) => setData('background_image', e.target.value)}
                                             placeholder="/assets/images/hero-bg.jpg"
                                         />
@@ -217,7 +218,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Input
                                             id="text_color"
                                             type="color"
-                                            value={data.text_color}
+                                            value={data.text_color as string}
                                             onChange={(e) => setData('text_color', e.target.value)}
                                         />
                                         {errors.text_color && (
@@ -233,10 +234,10 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                             min="0"
                                             max="1"
                                             step="0.1"
-                                            value={data.overlay_opacity}
+                                            value={data.overlay_opacity as string}
                                             onChange={(e) => setData('overlay_opacity', e.target.value)}
                                         />
-                                        <span className="text-sm text-muted-foreground">{data.overlay_opacity}</span>
+                                        <span className="text-sm text-muted-foreground">{data.overlay_opacity as string}</span>
                                         {errors.overlay_opacity && (
                                             <p className="text-sm text-red-600">{errors.overlay_opacity}</p>
                                         )}
@@ -247,7 +248,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Input
                                             id="sort_order"
                                             type="number"
-                                            value={data.sort_order}
+                                            value={data.sort_order as number}
                                             onChange={(e) => setData('sort_order', parseInt(e.target.value) || 0)}
                                             placeholder="0"
                                         />
@@ -261,7 +262,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                     <Label htmlFor="subtitle">Subtitle</Label>
                                     <Textarea
                                         id="subtitle"
-                                        value={data.subtitle}
+                                        value={data.subtitle as string}
                                         onChange={(e) => setData('subtitle', e.target.value)}
                                         placeholder="Bergabunglah dengan KSP Smart untuk membangun masa depan finansial..."
                                         rows={3}
@@ -276,7 +277,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Label htmlFor="cta_text">Call-to-Action Text</Label>
                                         <Input
                                             id="cta_text"
-                                            value={data.cta_text}
+                                            value={data.cta_text as string}
                                             onChange={(e) => setData('cta_text', e.target.value)}
                                             placeholder="e.g., Bergabung Sekarang"
                                         />
@@ -289,7 +290,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <Label htmlFor="cta_link">Call-to-Action Link</Label>
                                         <Input
                                             id="cta_link"
-                                            value={data.cta_link}
+                                            value={data.cta_link as string}
                                             onChange={(e) => setData('cta_link', e.target.value)}
                                             placeholder="e.g., /keanggotaan"
                                         />
@@ -304,7 +305,7 @@ export default function HeroSectionsEdit({ heroSection }: Props) {
                                         <input
                                             type="checkbox"
                                             id="is_active"
-                                            checked={data.is_active}
+                                            checked={data.is_active as boolean}
                                             onChange={(e) => setData('is_active', e.target.checked)}
                                             className="rounded border-gray-300"
                                         />

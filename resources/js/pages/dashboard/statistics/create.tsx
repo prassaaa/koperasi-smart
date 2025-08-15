@@ -34,7 +34,7 @@ const colorOptions = [
     { value: '#06B6D4', label: 'Cyan', color: '#06B6D4' },
 ];
 
-interface FormData {
+type FormData = {
     key: string;
     label: string;
     value: string;
@@ -46,7 +46,7 @@ interface FormData {
     animation_duration: number;
     sort_order: number;
     is_active: boolean;
-}
+} & Record<string, string | number | boolean>;
 
 export default function StatisticsCreate() {
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -184,7 +184,7 @@ export default function StatisticsCreate() {
                                             {colorOptions.map((option) => (
                                                 <SelectItem key={option.value} value={option.value}>
                                                     <div className="flex items-center gap-2">
-                                                        <div 
+                                                        <div
                                                             className="w-4 h-4 rounded border"
                                                             style={{ backgroundColor: option.color }}
                                                         />

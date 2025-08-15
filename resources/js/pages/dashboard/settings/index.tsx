@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { Save, Settings, Phone, Globe, Copyright } from 'lucide-react';
 
 interface Setting {
@@ -39,7 +39,7 @@ const groupIcons = {
 };
 
 export default function SettingsIndex({ settings }: Props) {
-    const { data, setData, post, processing, errors } = useForm<Record<string, string>>({});
+    const { data, setData, processing, errors } = useForm<Record<string, string>>({});
 
     // Initialize form data from settings
     React.useEffect(() => {
@@ -48,7 +48,7 @@ export default function SettingsIndex({ settings }: Props) {
             initialData[setting.key] = setting.value || '';
         });
         setData(initialData);
-    }, [settings]);
+    }, [settings, setData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -58,8 +58,9 @@ export default function SettingsIndex({ settings }: Props) {
             value,
         }));
 
-        post(route('dashboard.settings.batch'), {
-            data: { settings: settingsArray },
+        router.post(route('dashboard.settings.batch'), {
+            settings: settingsArray,
+        }, {
             preserveScroll: true,
         });
     };

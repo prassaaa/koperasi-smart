@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create', href: '/dashboard/settings/create' },
 ];
 
-interface FormData {
+type FormData = {
     key: string;
     value: string;
     type: string;
@@ -25,7 +25,7 @@ interface FormData {
     description: string;
     sort_order: number;
     is_active: boolean;
-}
+} & Record<string, string | number | boolean>;
 
 export default function SettingsCreate() {
     const { data, setData, post, processing, errors } = useForm<FormData>({

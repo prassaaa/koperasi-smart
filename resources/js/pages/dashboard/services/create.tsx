@@ -32,7 +32,7 @@ const colorOptions = [
     { value: '#06B6D4', label: 'Cyan', color: '#06B6D4' },
 ];
 
-interface FormData {
+type FormData = {
     name: string;
     description: string;
     short_description: string;
@@ -47,7 +47,7 @@ interface FormData {
     sort_order: number;
     is_featured: boolean;
     is_active: boolean;
-}
+} & Record<string, string | number | boolean | string[]>;
 
 export default function ServicesCreate() {
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -118,11 +118,11 @@ export default function ServicesCreate() {
                         <CardContent>
                             <div className="border rounded-lg p-4">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <div 
+                                    <div
                                         className="p-2 rounded-lg text-white"
                                         style={{ backgroundColor: data.color }}
                                     >
-                                        {iconOptions.find(icon => icon.value === data.icon)?.icon && 
+                                        {iconOptions.find(icon => icon.value === data.icon)?.icon &&
                                             React.createElement(iconOptions.find(icon => icon.value === data.icon)!.icon, { className: "h-5 w-5" })
                                         }
                                     </div>
@@ -222,7 +222,7 @@ export default function ServicesCreate() {
                                                 {colorOptions.map((option) => (
                                                     <SelectItem key={option.value} value={option.value}>
                                                         <div className="flex items-center gap-2">
-                                                            <div 
+                                                            <div
                                                                 className="w-4 h-4 rounded border"
                                                                 style={{ backgroundColor: option.color }}
                                                             />
@@ -346,7 +346,7 @@ export default function ServicesCreate() {
                                             Add Feature
                                         </Button>
                                     </div>
-                                    
+
                                     {data.features.map((feature, index) => (
                                         <div key={index} className="flex gap-2">
                                             <Input
