@@ -58,7 +58,6 @@ export default function TentangPage({ statistics = [] }: Props) {
   })
 
   useEffect(() => {
-
     // Counter animation
     const animateCounters = () => {
       const duration = 2000
@@ -93,9 +92,22 @@ export default function TentangPage({ statistics = [] }: Props) {
           setCounters(targets)
         }
       }, stepDuration)
+
+      return counterInterval
     }
 
-    setTimeout(animateCounters, 1000)
+    const timeoutId = setTimeout(() => {
+      const intervalId = animateCounters()
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId)
+        }
+      }
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
   }, [statistics])
 
   const timeline = [

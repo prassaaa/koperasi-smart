@@ -45,6 +45,12 @@ interface Props {
 
 export default function KeanggotaanPage({ statistics = [] }: Props) {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [counters, setCounters] = useState({
+    members: 0,
+    satisfaction: 0,
+    assets: 0,
+    umkm: 0,
+  })
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,6 +71,55 @@ export default function KeanggotaanPage({ statistics = [] }: Props) {
       clearInterval(testimonialInterval)
     }
   }, [])
+
+  useEffect(() => {
+    // Counter animation
+    const animateCounters = () => {
+      const duration = 2000
+      const steps = 60
+      const stepDuration = duration / steps
+
+      const targets = {
+        members: parseInt(statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'),
+        satisfaction: parseInt(statistics.find((s: Statistic) => s.key === 'satisfaction')?.value || '98'),
+        assets: parseInt(statistics.find((s: Statistic) => s.key === 'assets')?.value || '25'),
+        umkm: parseInt(statistics.find((s: Statistic) => s.key === 'umkm')?.value || '120'),
+      }
+
+      let step = 0
+      const counterInterval = setInterval(() => {
+        step++
+        const progress = step / steps
+
+        setCounters({
+          members: Math.floor(targets.members * progress),
+          satisfaction: Math.floor(targets.satisfaction * progress),
+          assets: Math.floor(targets.assets * progress),
+          umkm: Math.floor(targets.umkm * progress),
+        })
+
+        if (step >= steps) {
+          clearInterval(counterInterval)
+          setCounters(targets)
+        }
+      }, stepDuration)
+
+      return counterInterval
+    }
+
+    const timeoutId = setTimeout(() => {
+      const intervalId = animateCounters()
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId)
+        }
+      }
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [statistics])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -242,28 +297,28 @@ export default function KeanggotaanPage({ statistics = [] }: Props) {
     },
   ]
 
-  // Create member stats from database statistics
+  // Create member stats from animated counters
   const memberStats = [
     {
-      number: `${statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'}${statistics.find((s: Statistic) => s.key === 'members')?.suffix || '+'}`,
+      number: `${counters.members}${statistics.find((s: Statistic) => s.key === 'members')?.suffix || '+'}`,
       label: statistics.find((s: Statistic) => s.key === 'members')?.label || 'Anggota Aktif',
       description: statistics.find((s: Statistic) => s.key === 'members')?.description || 'Total anggota aktif koperasi',
       icon: Users,
     },
     {
-      number: `${statistics.find((s: Statistic) => s.key === 'satisfaction')?.value || '98'}${statistics.find((s: Statistic) => s.key === 'satisfaction')?.suffix || '%'}`,
+      number: `${counters.satisfaction}${statistics.find((s: Statistic) => s.key === 'satisfaction')?.suffix || '%'}`,
       label: statistics.find((s: Statistic) => s.key === 'satisfaction')?.label || 'Tingkat Kepuasan',
       description: statistics.find((s: Statistic) => s.key === 'satisfaction')?.description || 'Tingkat kepuasan anggota',
       icon: Star,
     },
     {
-      number: `Rp ${statistics.find((s: Statistic) => s.key === 'assets')?.value || '25'}${statistics.find((s: Statistic) => s.key === 'assets')?.suffix || 'M'}+`,
+      number: `Rp ${counters.assets}${statistics.find((s: Statistic) => s.key === 'assets')?.suffix || 'M'}+`,
       label: statistics.find((s: Statistic) => s.key === 'assets')?.label || 'Total Aset',
       description: statistics.find((s: Statistic) => s.key === 'assets')?.description || 'Total aset koperasi',
       icon: PiggyBank,
     },
     {
-      number: `${statistics.find((s: Statistic) => s.key === 'umkm')?.value || '120'}+`,
+      number: `${counters.umkm}+`,
       label: statistics.find((s: Statistic) => s.key === 'umkm')?.label || 'UMKM Berkembang',
       description: statistics.find((s: Statistic) => s.key === 'umkm')?.description || 'UMKM yang mendapat bantuan modal',
       icon: TrendingUp,
