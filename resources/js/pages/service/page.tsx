@@ -53,21 +53,55 @@ export default function LayananPage({ services }: Props) {
   const [savingsAmount, setSavingsAmount] = useState(5000000)
   const [savingsTerm, setSavingsTerm] = useState(12)
 
+  // Icon mapping function
+  const getIcon = (iconName: string) => {
+    const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+      'PiggyBank': PiggyBank,
+      'CreditCard': CreditCard,
+      'Building2': Building2,
+      'Calculator': Calculator,
+      'Briefcase': Building2,
+      'TrendingUp': TrendingUp,
+      'Users': Users,
+      'Shield': Shield,
+      'Phone': Phone,
+      'FileText': FileText,
+      'Award': Award,
+      'Zap': Zap,
+      'GraduationCap': GraduationCap,
+      'Smartphone': Smartphone,
+      'BarChart3': BarChart3,
+    };
+    return iconMap[iconName] || PiggyBank;
+  };
+
+  // Color mapping function
+  const getColorClasses = (color: string) => {
+    const colorMap: Record<string, { bg: string; gradient: string }> = {
+      'blue': { bg: 'bg-blue-500', gradient: 'from-blue-500 to-blue-700' },
+      'green': { bg: 'bg-green-500', gradient: 'from-green-500 to-green-700' },
+      'purple': { bg: 'bg-purple-500', gradient: 'from-purple-500 to-purple-700' },
+      'orange': { bg: 'bg-orange-500', gradient: 'from-orange-500 to-orange-700' },
+      'red': { bg: 'bg-red-500', gradient: 'from-red-500 to-red-700' },
+      'indigo': { bg: 'bg-indigo-500', gradient: 'from-indigo-500 to-indigo-700' },
+      'pink': { bg: 'bg-pink-500', gradient: 'from-pink-500 to-pink-700' },
+      'teal': { bg: 'bg-teal-500', gradient: 'from-teal-500 to-teal-700' },
+    };
+    return colorMap[color] || colorMap['blue'];
+  };
+
   // Map services from database to component format
-  const mappedServices = services.map((service: Service) => ({
-    id: service.id.toString(),
-    icon: service.icon === 'PiggyBank' ? PiggyBank :
-          service.icon === 'CreditCard' ? CreditCard :
-          service.icon === 'Building2' ? Building2 :
-          service.icon === 'Calculator' ? Calculator :
-          service.icon === 'Briefcase' ? Building2 :
-          service.icon === 'TrendingUp' ? TrendingUp : PiggyBank,
-    title: service.name,
-    subtitle: service.short_description || service.description.substring(0, 50) + '...',
-    description: service.description,
-    features: service.features || [],
-    color: service.color ? `bg-[${service.color}]` : "bg-blue-500",
-    gradient: service.color ? `from-[${service.color}] to-[${service.color}]` : "from-blue-500 to-blue-700",
+  const mappedServices = services.map((service: Service) => {
+    const colorClasses = getColorClasses(service.color || 'blue');
+    return {
+      id: service.id.toString(),
+      icon: getIcon(service.icon),
+      title: service.name,
+      subtitle: service.short_description || service.description.substring(0, 50) + '...',
+      description: service.description,
+      features: service.features || [],
+      color: colorClasses.bg,
+      gradient: colorClasses.gradient,
     benefits: service.features || [],
     requirements: service.requirements ? service.requirements.split('\n').filter(Boolean) : [],
     interestRates: service.interest_rate ? [
@@ -76,7 +110,8 @@ export default function LayananPage({ services }: Props) {
     loanTypes: service.admin_fee ? [
       { type: "Standard", amount: "Sesuai kemampuan", rate: `${service.interest_rate || 0}%` }
     ] : [],
-  }))
+    };
+  });
 
 
 
@@ -167,7 +202,7 @@ export default function LayananPage({ services }: Props) {
             </p>
           </div>
 
-          <Tabs defaultValue="simpanan" className="w-full">
+          <Tabs defaultValue={mappedServices[0]?.id || "1"} className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-12">
               {mappedServices.map((service) => (
                 <TabsTrigger key={service.id} value={service.id} className="text-sm">
