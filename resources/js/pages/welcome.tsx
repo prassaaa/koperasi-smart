@@ -30,6 +30,8 @@ import {
   BarChart3,
   Target,
   Handshake,
+  GraduationCap,
+  Smartphone,
   Heart,
   Zap,
   ChevronRight,
@@ -245,18 +247,50 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
     },
   ]
 
+  // Icon mapping function
+  const getServiceIcon = (iconName: string) => {
+    const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+      'PiggyBank': PiggyBank,
+      'CreditCard': CreditCard,
+      'Building2': Building2,
+      'Calculator': Calculator,
+      'Briefcase': Building2,
+      'TrendingUp': TrendingUp,
+      'Users': Users,
+      'Shield': Shield,
+      'Phone': Phone,
+      'FileText': FileText,
+      'Award': Award,
+      'Zap': Zap,
+      'GraduationCap': GraduationCap,
+      'Smartphone': Smartphone,
+      'BarChart3': BarChart3,
+    };
+    return iconMap[iconName] || PiggyBank;
+  };
+
+  // Color mapping function
+  const getServiceColorClasses = (color: string) => {
+    const colorMap: Record<string, string> = {
+      'blue': 'bg-blue-500',
+      'green': 'bg-green-500',
+      'purple': 'bg-purple-500',
+      'orange': 'bg-orange-500',
+      'red': 'bg-red-500',
+      'indigo': 'bg-indigo-500',
+      'pink': 'bg-pink-500',
+      'teal': 'bg-teal-500',
+    };
+    return colorMap[color] || 'bg-blue-500';
+  };
+
   // Map services from database to component format
   const mappedServices = services.map((service: Service) => ({
-    icon: service.icon === 'PiggyBank' ? PiggyBank :
-          service.icon === 'CreditCard' ? CreditCard :
-          service.icon === 'Building2' ? Building2 :
-          service.icon === 'Calculator' ? Calculator :
-          service.icon === 'Briefcase' ? Building2 :
-          service.icon === 'TrendingUp' ? TrendingUp : PiggyBank,
+    icon: getServiceIcon(service.icon),
     title: service.name,
     description: service.short_description || service.description,
     features: service.features || [],
-    color: service.color ? `bg-[${service.color}]` : "bg-blue-500",
+    color: getServiceColorClasses(service.color || 'blue'),
   }))
 
   const achievements = [
