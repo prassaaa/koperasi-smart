@@ -39,7 +39,13 @@ Route::get('/keanggotaan', function () {
 })->name('membership');
 
 Route::get('/kontak', function () {
-    return Inertia::render('contact/page');
+    return Inertia::render('contact/page', [
+        'settings' => [
+            'general' => App\Models\Setting::getByGroup('general'),
+            'contact' => App\Models\Setting::getByGroup('contact'),
+            'social' => App\Models\Setting::getByGroup('social'),
+        ],
+    ]);
 })->name('contact');
 
 Route::middleware(['auth', 'verified'])->group(function () {

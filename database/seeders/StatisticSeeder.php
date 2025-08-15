@@ -92,6 +92,19 @@ class StatisticSeeder extends Seeder
                 'sort_order' => 6,
                 'is_active' => true,
             ],
+            [
+                'key' => 'umkm',
+                'label' => 'UMKM Berkembang',
+                'value' => '120',
+                'suffix' => '+',
+                'icon' => 'TrendingUp',
+                'color' => '#F59E0B',
+                'description' => 'UMKM yang mendapat bantuan modal',
+                'show_counter_animation' => true,
+                'animation_duration' => 2200,
+                'sort_order' => 7,
+                'is_active' => true,
+            ],
         ];
 
         foreach ($statistics as $statistic) {

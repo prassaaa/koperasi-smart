@@ -29,7 +29,25 @@ import {
   Crown,
 } from "lucide-react"
 
-export default function TentangPage() {
+interface Statistic {
+  id: number;
+  key: string;
+  label: string;
+  value: string;
+  suffix?: string;
+  icon: string;
+  color: string;
+  description?: string;
+  show_counter_animation: boolean;
+  animation_duration: number;
+  is_active: boolean;
+}
+
+interface Props {
+  statistics: Statistic[];
+}
+
+export default function TentangPage({ statistics = [] }: Props) {
   const [counters, setCounters] = useState({
     members: 0,
     years: 0,
@@ -47,7 +65,14 @@ export default function TentangPage() {
       const steps = 60
       const stepDuration = duration / steps
 
-      const targets = { members: 485, years: 12, satisfaction: 96, assets: 8, branches: 3, employees: 12 }
+      const targets = {
+        members: parseInt(statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'),
+        years: parseInt(statistics.find((s: Statistic) => s.key === 'years')?.value || '15'),
+        satisfaction: parseInt(statistics.find((s: Statistic) => s.key === 'satisfaction')?.value || '98'),
+        assets: parseInt(statistics.find((s: Statistic) => s.key === 'assets')?.value || '25'),
+        branches: parseInt(statistics.find((s: Statistic) => s.key === 'branches')?.value || '5'),
+        employees: parseInt(statistics.find((s: Statistic) => s.key === 'employees')?.value || '45'),
+      }
 
       let step = 0
       const counterInterval = setInterval(() => {
@@ -71,7 +96,7 @@ export default function TentangPage() {
     }
 
     setTimeout(animateCounters, 1000)
-  }, [])
+  }, [statistics])
 
   const timeline = [
     {
@@ -166,7 +191,7 @@ export default function TentangPage() {
       title: "Gotong Royong & Kekeluargaan",
       description:
         "Menjalankan prinsip gotong royong dalam setiap kegiatan, membangun rasa kekeluargaan antar anggota, dan saling membantu dalam kesulitan.",
-      stats: "485 anggota aktif",
+      stats: `${statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'} anggota aktif`,
       details: [
         "Arisan bulanan untuk mempererat silaturahmi",
         "Bantuan sosial untuk anggota yang kesulitan",
@@ -247,47 +272,48 @@ export default function TentangPage() {
     },
   ]
 
+  // Create stats array from database statistics
   const stats = [
     {
       number: counters.members,
-      suffix: "+",
-      label: "Anggota Aktif",
-      description: "Warga desa dan sekitarnya",
+      suffix: statistics.find((s: Statistic) => s.key === 'members')?.suffix || '+',
+      label: statistics.find((s: Statistic) => s.key === 'members')?.label || 'Anggota Aktif',
+      description: statistics.find((s: Statistic) => s.key === 'members')?.description || 'Total anggota aktif koperasi',
       icon: Users,
     },
     {
       number: counters.years,
-      suffix: "+",
-      label: "Tahun Pengalaman",
-      description: "Melayani masyarakat desa",
+      suffix: statistics.find((s: Statistic) => s.key === 'years')?.suffix || '+',
+      label: statistics.find((s: Statistic) => s.key === 'years')?.label || 'Tahun Berpengalaman',
+      description: statistics.find((s: Statistic) => s.key === 'years')?.description || 'Tahun melayani masyarakat',
       icon: Calendar,
     },
     {
       number: counters.satisfaction,
-      suffix: "%",
-      label: "Kepuasan Anggota",
-      description: "Berdasarkan survei internal",
+      suffix: statistics.find((s: Statistic) => s.key === 'satisfaction')?.suffix || '%',
+      label: statistics.find((s: Statistic) => s.key === 'satisfaction')?.label || 'Tingkat Kepuasan',
+      description: statistics.find((s: Statistic) => s.key === 'satisfaction')?.description || 'Tingkat kepuasan anggota',
       icon: Star,
     },
     {
       number: counters.assets,
-      suffix: "M+",
-      label: "Aset Dikelola",
-      description: "Total aset dalam jutaan rupiah",
+      suffix: statistics.find((s: Statistic) => s.key === 'assets')?.suffix || 'M',
+      label: statistics.find((s: Statistic) => s.key === 'assets')?.label || 'Total Aset',
+      description: statistics.find((s: Statistic) => s.key === 'assets')?.description || 'Total aset koperasi',
       icon: Banknote,
     },
     {
       number: counters.branches,
-      suffix: "+",
-      label: "Lokasi Layanan",
-      description: "Kantor dan pos pelayanan",
+      suffix: statistics.find((s: Statistic) => s.key === 'branches')?.suffix || '',
+      label: statistics.find((s: Statistic) => s.key === 'branches')?.label || 'Cabang',
+      description: statistics.find((s: Statistic) => s.key === 'branches')?.description || 'Jumlah kantor cabang',
       icon: Building2,
     },
     {
       number: counters.employees,
-      suffix: "+",
-      label: "Pengurus & Karyawan",
-      description: "Tim pelayanan berpengalaman",
+      suffix: statistics.find((s: Statistic) => s.key === 'employees')?.suffix || '+',
+      label: statistics.find((s: Statistic) => s.key === 'employees')?.label || 'Karyawan',
+      description: statistics.find((s: Statistic) => s.key === 'employees')?.description || 'Total karyawan profesional',
       icon: Briefcase,
     },
   ]
@@ -321,8 +347,8 @@ export default function TentangPage() {
             </h1>
 
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Perjalanan 12+ tahun membangun kepercayaan sebagai koperasi simpan pinjam terdepan di Desa Arthomoro. Dari
-              25 anggota pendiri hingga 485+ anggota aktif yang tersebar di 3 desa sekitar.
+              Perjalanan {statistics.find((s: Statistic) => s.key === 'years')?.value || '15'}+ tahun membangun kepercayaan sebagai koperasi simpan pinjam terdepan di Desa Arthomoro. Dari
+              25 anggota pendiri hingga {statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'}+ anggota aktif yang tersebar di {statistics.find((s: Statistic) => s.key === 'branches')?.value || '5'} lokasi layanan.
             </p>
           </div>
         </div>

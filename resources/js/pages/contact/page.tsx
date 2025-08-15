@@ -31,7 +31,18 @@ import {
   PiggyBank,
 } from "lucide-react"
 
-export default function KontakPage() {
+interface CmsSettings {
+  general?: Record<string, string>;
+  contact?: Record<string, string>;
+  social?: Record<string, string>;
+  footer?: Record<string, string>;
+}
+
+interface Props {
+  settings: CmsSettings;
+}
+
+export default function KontakPage({ settings = {} }: Props) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -57,16 +68,19 @@ export default function KontakPage() {
       icon: Phone,
       title: "Telepon & WhatsApp",
       description: "Hubungi kami langsung untuk konsultasi cepat",
-      details: ["+62 333 421 567", "+62 812 3456 7890"],
+      details: [
+        settings.contact?.contact_phone || "+62 333 421 567",
+        settings.contact?.contact_whatsapp || "+62 812 3456 7890"
+      ],
       action: "Hubungi Sekarang",
       color: "from-green-500 to-green-700",
-      available: "Senin-Sabtu 08:00-16:00",
+      available: `${settings.contact?.operating_hours_weekday || 'Senin-Jumat: 08:00-16:00 WIB'}`,
     },
     {
       icon: Mail,
       title: "Email",
       description: "Kirim pertanyaan melalui email",
-      details: ["info@kspsmart.id", "admin@kspsmart.id"],
+      details: [settings.contact?.contact_email || "info@kspsmart.id"],
       action: "Kirim Email",
       color: "from-blue-500 to-blue-700",
       available: "Respon dalam 24 jam",
@@ -78,7 +92,7 @@ export default function KontakPage() {
       details: ["WhatsApp Business", "Respon cepat"],
       action: "Mulai Chat",
       color: "from-purple-500 to-purple-700",
-      available: "Senin-Sabtu 08:00-16:00",
+      available: `${settings.contact?.operating_hours_weekday || 'Senin-Jumat: 08:00-16:00 WIB'}`,
     },
     {
       icon: Calendar,
@@ -87,7 +101,7 @@ export default function KontakPage() {
       details: ["Konsultasi langsung", "Pelayanan tatap muka"],
       action: "Lihat Lokasi",
       color: "from-orange-500 to-orange-700",
-      available: "Senin-Sabtu 08:00-16:00",
+      available: `${settings.contact?.operating_hours_weekday || 'Senin-Jumat: 08:00-16:00 WIB'}`,
     },
   ]
 
@@ -95,10 +109,10 @@ export default function KontakPage() {
     {
       name: "Kantor Pusat KSP Smart",
       type: "Head Office",
-      address: "Jl. Raya Arthomoro No. 123, Desa Arthomoro, Kec. Sempu, Banyuwangi 68468",
-      phone: "+62 333 421 567",
-      email: "info@kspsmart.id",
-      hours: "Senin-Sabtu: 08:00-16:00, Minggu: Tutup",
+      address: settings.contact?.contact_address || "Jl. Raya Desa Satrio Mulia No. 123, Kec. Kalibaru, Kab. Banyuwangi",
+      phone: settings.contact?.contact_phone || "+62 333 421 567",
+      email: settings.contact?.contact_email || "info@kspsmart.co.id",
+      hours: `${settings.contact?.operating_hours_weekday || 'Senin-Jumat: 08:00-16:00 WIB'}, ${settings.contact?.operating_hours_saturday || 'Sabtu: 08:00-12:00 WIB'}, Minggu: Tutup`,
       services: ["Semua layanan", "Konsultasi gratis", "Ruang tunggu"],
       manager: "Bapak Suyono, S.E.",
       image: "/arthomoro-office.png",
@@ -203,7 +217,7 @@ export default function KontakPage() {
       questions: [
         {
           q: "Bagaimana cara cek saldo via WhatsApp?",
-          a: "Kirim pesan 'SALDO [Nomor Anggota]' ke WhatsApp resmi kami di +62 812 3456 7890 dan akan mendapat balasan otomatis.",
+          a: `Kirim pesan 'SALDO [Nomor Anggota]' ke WhatsApp resmi kami di ${settings.contact?.contact_whatsapp || '+62 812 3456 7890'} dan akan mendapat balasan otomatis.`,
         },
         {
           q: "Apakah ada biaya untuk layanan WhatsApp?",
@@ -221,21 +235,21 @@ export default function KontakPage() {
     {
       channel: "Customer Service",
       icon: Headphones,
-      availability: "Senin-Sabtu 08:00-16:00",
+      availability: settings.contact?.operating_hours_weekday || "Senin-Jumat 08:00-16:00",
       response: "Langsung",
       description: "Bantuan langsung untuk semua pertanyaan",
     },
     {
       channel: "WhatsApp Support",
       icon: MessageCircle,
-      availability: "Senin-Sabtu 08:00-16:00",
+      availability: settings.contact?.operating_hours_weekday || "Senin-Jumat 08:00-16:00",
       response: "< 30 menit",
       description: "Bantuan via WhatsApp untuk kemudahan",
     },
     {
       channel: "Pengaduan",
       icon: FileText,
-      availability: "Senin-Sabtu 08:00-16:00",
+      availability: settings.contact?.operating_hours_weekday || "Senin-Jumat 08:00-16:00",
       response: "< 24 jam",
       description: "Penanganan keluhan dan saran anggota",
     },

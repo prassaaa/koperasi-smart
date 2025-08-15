@@ -25,7 +25,25 @@ import {
   Target,
 } from "lucide-react"
 
-export default function KeanggotaanPage() {
+interface Statistic {
+  id: number;
+  key: string;
+  label: string;
+  value: string;
+  suffix?: string;
+  icon: string;
+  color: string;
+  description?: string;
+  show_counter_animation: boolean;
+  animation_duration: number;
+  is_active: boolean;
+}
+
+interface Props {
+  statistics: Statistic[];
+}
+
+export default function KeanggotaanPage({ statistics = [] }: Props) {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [formData, setFormData] = useState({
     name: "",
@@ -224,29 +242,30 @@ export default function KeanggotaanPage() {
     },
   ]
 
+  // Create member stats from database statistics
   const memberStats = [
     {
-      number: "485",
-      label: "Anggota Aktif",
-      description: "Warga desa dan sekitarnya",
+      number: `${statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'}${statistics.find((s: Statistic) => s.key === 'members')?.suffix || '+'}`,
+      label: statistics.find((s: Statistic) => s.key === 'members')?.label || 'Anggota Aktif',
+      description: statistics.find((s: Statistic) => s.key === 'members')?.description || 'Total anggota aktif koperasi',
       icon: Users,
     },
     {
-      number: "96%",
-      label: "Tingkat Kepuasan",
-      description: "Berdasarkan survei anggota",
+      number: `${statistics.find((s: Statistic) => s.key === 'satisfaction')?.value || '98'}${statistics.find((s: Statistic) => s.key === 'satisfaction')?.suffix || '%'}`,
+      label: statistics.find((s: Statistic) => s.key === 'satisfaction')?.label || 'Tingkat Kepuasan',
+      description: statistics.find((s: Statistic) => s.key === 'satisfaction')?.description || 'Tingkat kepuasan anggota',
       icon: Star,
     },
     {
-      number: "Rp 8M+",
-      label: "Total Simpanan",
-      description: "Aset yang dikelola untuk anggota",
+      number: `Rp ${statistics.find((s: Statistic) => s.key === 'assets')?.value || '25'}${statistics.find((s: Statistic) => s.key === 'assets')?.suffix || 'M'}+`,
+      label: statistics.find((s: Statistic) => s.key === 'assets')?.label || 'Total Aset',
+      description: statistics.find((s: Statistic) => s.key === 'assets')?.description || 'Total aset koperasi',
       icon: PiggyBank,
     },
     {
-      number: "120+",
-      label: "UMKM Berkembang",
-      description: "Mendapat bantuan modal usaha",
+      number: `${statistics.find((s: Statistic) => s.key === 'umkm')?.value || '120'}+`,
+      label: statistics.find((s: Statistic) => s.key === 'umkm')?.label || 'UMKM Berkembang',
+      description: statistics.find((s: Statistic) => s.key === 'umkm')?.description || 'UMKM yang mendapat bantuan modal',
       icon: TrendingUp,
     },
   ]
@@ -305,7 +324,7 @@ export default function KeanggotaanPage() {
             </h1>
 
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Jadilah bagian dari 485+ anggota yang telah merasakan manfaat koperasi yang amanah dan transparan. Nikmati
+              Jadilah bagian dari {statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'}+ anggota yang telah merasakan manfaat koperasi yang amanah dan transparan. Nikmati
               bunga kompetitif, kredit mudah, dan bagi hasil tahunan.
             </p>
           </div>

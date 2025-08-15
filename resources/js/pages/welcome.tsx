@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { usePage } from '@inertiajs/react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -25,7 +26,6 @@ import {
   Mail,
   MapPin,
   Clock,
-  Globe,
   FileText,
   BarChart3,
   Target,
@@ -33,6 +33,10 @@ import {
   Heart,
   Zap,
   ChevronRight,
+  MessageCircle,
+  Video,
+  Camera,
+  Share2,
 } from "lucide-react"
 
 interface HeroSection {
@@ -85,6 +89,18 @@ interface Service {
   is_active: boolean;
 }
 
+interface CmsSettings {
+  general?: Record<string, string>;
+  contact?: Record<string, string>;
+  social?: Record<string, string>;
+  footer?: Record<string, string>;
+}
+
+interface PageProps {
+  cmsSettings?: CmsSettings;
+  [key: string]: unknown;
+}
+
 interface Props {
   heroSection: HeroSection;
   statistics: Statistic[];
@@ -92,6 +108,9 @@ interface Props {
 }
 
 export default function KoperasiLandingPage({ heroSection, statistics, services }: Props) {
+  // Get CMS settings from shared data
+  const page = usePage();
+  const cmsSettings = (page.props as PageProps).cmsSettings || {};
   const [isVisible, setIsVisible] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [activeService, setActiveService] = useState(0)
@@ -135,10 +154,10 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
 
       // Get targets from database statistics or use defaults
       const targets = {
-        members: parseInt(statistics.find((s: Statistic) => s.key === 'total_members')?.value || '485'),
-        years: parseInt(statistics.find((s: Statistic) => s.key === 'years_operating')?.value || '12'),
-        satisfaction: parseInt(statistics.find((s: Statistic) => s.key === 'satisfaction_rate')?.value || '95'),
-        assets: parseInt(statistics.find((s: Statistic) => s.key === 'total_assets')?.value || '8'),
+        members: parseInt(statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'),
+        years: parseInt(statistics.find((s: Statistic) => s.key === 'years')?.value || '15'),
+        satisfaction: parseInt(statistics.find((s: Statistic) => s.key === 'satisfaction')?.value || '98'),
+        assets: parseInt(statistics.find((s: Statistic) => s.key === 'assets')?.value || '25'),
       }
 
       let step = 0
@@ -279,7 +298,7 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
       icon: Users,
       title: "Gotong Royong & Kekeluargaan",
       description: "Semangat gotong royong dalam membangun ekonomi desa bersama-sama untuk kesejahteraan bersama",
-      stats: "485 anggota aktif",
+      stats: `${statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'} anggota aktif`,
     },
     {
       icon: Lightbulb,
@@ -295,30 +314,31 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
     },
   ]
 
+  // Create stats array from database statistics
   const stats = [
     {
       number: counters.members,
-      suffix: "+",
-      label: "Anggota Aktif",
-      description: "Warga desa yang terdaftar",
+      suffix: statistics.find((s: Statistic) => s.key === 'members')?.suffix || '+',
+      label: statistics.find((s: Statistic) => s.key === 'members')?.label || 'Anggota Aktif',
+      description: statistics.find((s: Statistic) => s.key === 'members')?.description || 'Total anggota aktif koperasi',
     },
     {
       number: counters.years,
-      suffix: "+",
-      label: "Tahun Beroperasi",
-      description: "Melayani masyarakat desa",
+      suffix: statistics.find((s: Statistic) => s.key === 'years')?.suffix || '+',
+      label: statistics.find((s: Statistic) => s.key === 'years')?.label || 'Tahun Berpengalaman',
+      description: statistics.find((s: Statistic) => s.key === 'years')?.description || 'Tahun melayani masyarakat',
     },
     {
       number: counters.satisfaction,
-      suffix: "%",
-      label: "Kepuasan Anggota",
-      description: "Berdasarkan survei internal",
+      suffix: statistics.find((s: Statistic) => s.key === 'satisfaction')?.suffix || '%',
+      label: statistics.find((s: Statistic) => s.key === 'satisfaction')?.label || 'Tingkat Kepuasan',
+      description: statistics.find((s: Statistic) => s.key === 'satisfaction')?.description || 'Tingkat kepuasan anggota',
     },
     {
       number: counters.assets,
-      suffix: "M+",
-      label: "Aset Dikelola",
-      description: "Total aset dalam miliar rupiah",
+      suffix: statistics.find((s: Statistic) => s.key === 'assets')?.suffix || 'M',
+      label: statistics.find((s: Statistic) => s.key === 'assets')?.label || 'Total Aset',
+      description: statistics.find((s: Statistic) => s.key === 'assets')?.description || 'Total aset koperasi',
     },
   ]
 
@@ -412,7 +432,7 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-6 h-6 text-green-500" />
                     <div>
-                      <div className="text-sm font-bold text-gray-900">8% p.a</div>
+                      <div className="text-sm font-bold text-gray-900">{services.find((s: Service) => s.category === 'savings')?.interest_rate || '8.5'}% p.a</div>
                       <div className="text-xs text-gray-500">Bunga Simpanan</div>
                     </div>
                   </div>
@@ -421,7 +441,7 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
                   <div className="flex items-center space-x-2">
                     <Users className="w-6 h-6 text-blue-500" />
                     <div>
-                      <div className="text-sm font-bold text-gray-900">485</div>
+                      <div className="text-sm font-bold text-gray-900">{statistics.find((s: Statistic) => s.key === 'members')?.value || '1250'}</div>
                       <div className="text-xs text-gray-500">Anggota Aktif</div>
                     </div>
                   </div>
@@ -570,7 +590,7 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
                 <h5 className="font-bold text-blue-900 mb-3">Pertumbuhan Aset</h5>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>2024</span>
+                    <span>2025</span>
                     <span className="font-bold">8.5M</span>
                   </div>
                   <Progress value={75} className="h-2" />
@@ -770,43 +790,43 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-white" />
+                      <MapPin className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-white mb-1">Alamat Kantor</h4>
-                      <p className="text-blue-100">Jl. Raya Desa Arthomoro No. 45, Kec. Kalibaru, Kab. Banyuwangi</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.contact_address || 'Jl. Raya Desa Arthomoro No. 45, Kec. Kalibaru, Kab. Banyuwangi'}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                      <Phone className="w-6 h-6 text-white" />
+                      <Phone className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-white mb-1">Telepon & WhatsApp</h4>
-                      <p className="text-blue-100">+62 333 123 456</p>
-                      <p className="text-blue-100">+62 812 3456 7890</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.contact_phone || '+62 333 123 456'}</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.contact_whatsapp || '+62 812 3456 7890'}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                      <Mail className="w-6 h-6 text-white" />
+                      <Mail className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-white mb-1">Email</h4>
-                      <p className="text-blue-100">info@kspsmart.id</p>
-                      <p className="text-blue-100">admin@kspsmart.id</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.contact_email || 'info@kspsmart.id'}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-white" />
+                      <Clock className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h4 className="font-bold text-white mb-1">Jam Operasional</h4>
-                      <p className="text-blue-100">Senin - Sabtu: 08:00 - 15:00</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.operating_hours_weekday || 'Senin - Jumat: 08:00 - 16:00 WIB'}</p>
+                      <p className="text-blue-100">{cmsSettings.contact?.operating_hours_saturday || 'Sabtu: 08:00 - 12:00 WIB'}</p>
                       <p className="text-blue-100">Minggu: Tutup</p>
                     </div>
                   </div>
@@ -816,16 +836,46 @@ export default function KoperasiLandingPage({ heroSection, statistics, services 
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
                 <h4 className="font-bold text-white mb-4">Media Sosial</h4>
                 <div className="flex space-x-4">
-                  <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white border-0">
-                    <Globe className="w-4 h-4 mr-2" />
-                    Facebook
-                  </Button>
-                  <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white border-0">
-                    Instagram
-                  </Button>
-                  <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white border-0">
-                    WhatsApp
-                  </Button>
+                  {cmsSettings.social?.social_facebook && (
+                    <Button
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white border-0"
+                      onClick={() => window.open(cmsSettings.social?.social_facebook || '', '_blank')}
+                    >
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Facebook
+                    </Button>
+                  )}
+                  {cmsSettings.social?.social_instagram && (
+                    <Button
+                      size="sm"
+                      className="bg-pink-600 hover:bg-pink-700 text-white border-0"
+                      onClick={() => window.open(cmsSettings.social?.social_instagram || '', '_blank')}
+                    >
+                      <Camera className="w-4 h-4 mr-2" />
+                      Instagram
+                    </Button>
+                  )}
+                  {cmsSettings.social?.social_youtube && (
+                    <Button
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 text-white border-0"
+                      onClick={() => window.open(cmsSettings.social?.social_youtube || '', '_blank')}
+                    >
+                      <Video className="w-4 h-4 mr-2" />
+                      YouTube
+                    </Button>
+                  )}
+                  {cmsSettings.contact?.contact_whatsapp && (
+                    <Button
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white border-0"
+                      onClick={() => window.open(`https://wa.me/${cmsSettings.contact?.contact_whatsapp?.replace(/[^0-9]/g, '') || ''}`, '_blank')}
+                    >
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      WhatsApp
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
