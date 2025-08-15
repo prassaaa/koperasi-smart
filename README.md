@@ -23,13 +23,13 @@ Website resmi dan sistem manajemen untuk Koperasi Simpan Pinjam (KSP) Smart yang
 ## 🛠️ Teknologi
 
 ### Backend
-- **Laravel 11** - PHP Framework
+- **Laravel 12** - PHP Framework
 - **Inertia.js** - Modern monolith
 - **MySQL** - Database
 - **Authentication** - Laravel Breeze
 
 ### Frontend
-- **React 18** - UI Library
+- **React 19** - UI Library
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
 - **Shadcn/ui** - Component library
